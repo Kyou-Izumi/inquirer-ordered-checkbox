@@ -45,7 +45,7 @@ console.log('Your priorities:', answer);
 ### Advanced Configuration
 
 ```typescript
-import orderedCheckbox from '@kyou-izumi/inquirer-ordered-checkbox';
+import orderedCheckbox, { Separator } from '@kyou-izumi/inquirer-ordered-checkbox';
 
 const answer = await orderedCheckbox({
   message: 'Configure your development workflow:',
@@ -63,8 +63,7 @@ const answer = await orderedCheckbox({
     {
       name: 'Documentation',
       value: 'docs',
-      description: 'API docs and user guides',
-      checked: true // Pre-selected
+      description: 'API docs and user guides'
     },
     {
       name: 'Performance monitoring',
@@ -77,6 +76,7 @@ const answer = await orderedCheckbox({
       disabled: true // Cannot be selected
     }
   ],
+  default: ['quality', 'docs'], // Pre-select in this order
   validate: (choices) => {
     if (choices.length === 0) {
       return 'Please select at least one option.';
@@ -122,6 +122,7 @@ const answer = await orderedCheckbox({
 | ---------- | -------------------------------------- | ------- | ------------------------------------- |
 | `message`  | `string`                               |         | The question to ask the user          |
 | `choices`  | `Array<Choice \| Separator \| string>` |         | List of choices                       |
+| `default`  | `Array<Value>`                         | `[]`    | Pre-selected values in order          |
 | `validate` | `function`                             |         | Validation function for the answer    |
 | `theme`    | `object`                               |         | Custom theme configuration            |
 | `pageSize` | `number`                               | `7`     | Number of choices to display per page |
@@ -134,9 +135,7 @@ interface Choice<T = any> {
   value: T;            // The actual value returned
   description?: string; // Help text shown on selection
   short?: string;      // Abbreviated name for final answer
-  checked?: boolean;   // Pre-selected state
   disabled?: boolean;  // Cannot be selected
-  order?: number;      // Initial order (for pre-selected items)
 }
 ```
 

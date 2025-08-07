@@ -42,29 +42,32 @@ const checkboxSortTheme: CheckboxSortTheme = {
 }
 
 const normalizedChoices = <Value>(
-    choices: ReadonlyArray<Item<Value> | Separator> | ReadonlyArray<string | Separator>
+    choices: ReadonlyArray<Item<Value> | Separator> | ReadonlyArray<string | Separator>,
+    defaultValues: ReadonlyArray<Value> = []
 ): ReadonlyArray<NormalizedChoice<Value> | Separator> => {
     return choices.map((choice: string | Separator | Item<Value>) => {
         if (Separator.isSeparator(choice)) return choice;
         if (typeof choice === "string") {
+            const defaultIndex = defaultValues.indexOf(choice as Value);
             return {
                 name: choice,
                 value: choice,
                 short: choice,
                 disabled: false,
-                checked: false,
-                order: 0
+                checked: defaultIndex !== -1,
+                order: defaultIndex !== -1 ? defaultIndex + 1 : 0
             } as NormalizedChoice<Value>;
         }
         const name = choice.name || String(choice.value);
+        const defaultIndex = defaultValues.indexOf(choice.value);
         const normalizedChoice = {
             name,
             value: choice.value,
             description: choice.description,
             short: choice.short || name,
             disabled: choice.disabled || false,
-            checked: choice.checked || false,
-            order: choice.order || 0
+            checked: defaultIndex !== -1,
+            order: defaultIndex !== -1 ? defaultIndex + 1 : 0
         }
         return normalizedChoice
     })
@@ -79,6 +82,7 @@ const orderedCheckbox = createPrompt(
             instructions,
             pageSize = 7,
             choices,
+            default: defaultValues = [],
             loop = true,
             required,
             validate = () => true,
@@ -88,7 +92,7 @@ const orderedCheckbox = createPrompt(
         const [status, setStatus] = useState<Status>("idle");
         const prefix = usePrefix({ status, theme });
         const [items, setItems] = useState<ReadonlyArray<NormalizedChoice<Value> | Separator>>(
-            normalizedChoices<Value>(choices)
+            normalizedChoices<Value>(choices, defaultValues)
         );
 
         const bounds = useMemo(() => {
@@ -100,7 +104,11 @@ const orderedCheckbox = createPrompt(
         }, [items]);
 
         const [active, setActive] = useState<number>(bounds.first);
-        const [nextOrder, setNextOrder] = useState<number>(1);
+        const [nextOrder, setNextOrder] = useState<number>(() => {
+            // Initialize nextOrder based on existing checked items
+            const checkedItems = items.filter(isChecked);
+            return checkedItems.length > 0 ? Math.max(...checkedItems.map(item => item.order)) + 1 : 1;
+        });
         const [showTips, setShowTips] = useState<boolean>(true);
         const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
 
@@ -140,9 +148,8 @@ const orderedCheckbox = createPrompt(
                 if (isChecked(currentItem)) {
                     // Deselecting: reset order and adjust others
                     const removedOrder = currentItem.order;
-                    setNextOrder(nextOrder - 1);
 
-                    setItems(items.map((item, index) => {
+                    const updatedItems = items.map((item, index) => {
                         if (index === active) {
                             return {
                                 ...item,
@@ -157,7 +164,13 @@ const orderedCheckbox = createPrompt(
                             };
                         }
                         return item;
-                    }))
+                    });
+
+                    setItems(updatedItems);
+
+                    // Update nextOrder to be the highest order + 1, or 1 if no items are checked
+                    const remainingChecked = updatedItems.filter(isChecked);
+                    setNextOrder(remainingChecked.length > 0 ? Math.max(...remainingChecked.map(item => item.order)) + 1 : 1);
                 } else {
                     // Selecting: assign next order
                     const newOrder = nextOrder

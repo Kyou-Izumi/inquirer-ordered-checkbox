@@ -1,10 +1,10 @@
-import { Theme } from "@inquirer/core";
+import { Theme, Separator } from "@inquirer/core";
 import { PartialDeep } from "@inquirer/type";
 
 type MaybePromise<T> = T | Promise<T>;
 export type Item<Value> = Choice<Value>;
 
-type CheckboxSortTheme = {
+export type CheckboxSortTheme = {
     icon: {
         cursor: string;
     };
@@ -24,8 +24,6 @@ export interface Choice<Value> {
     description?: string | undefined;
     short?: string;
     disabled?: boolean | string;
-    checked?: boolean;
-    order?: number;
 }
 
 export interface NormalizedChoice<Value> extends Choice<Value> {
@@ -37,12 +35,13 @@ export interface NormalizedChoice<Value> extends Choice<Value> {
 };
 
 
-interface CheckboxSortConfig<Value> {
+export interface CheckboxSortConfig<Value> {
     message: string;
     prefix?: string;
     pageSize?: number;
     instructions?: string;
     choices: ReadonlyArray<Item<Value> | Separator> | ReadonlyArray<string | Separator>;
+    default?: ReadonlyArray<Value>;
     loop?: boolean;
     required?: boolean;
     validate?: ((value: ReadonlyArray<Choice<Value>>) => MaybePromise<boolean | string>);
