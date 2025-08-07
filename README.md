@@ -1,6 +1,6 @@
-# inquirer-ordered-checkbox
+# @kyou-izumi/inquirer-ordered-checkbox
 
-[![npm version](https://badge.fury.io/js/inquirer-ordered-checkbox.svg)](https://badge.fury.io/js/inquirer-ordered-checkbox)
+[![npm version](https://badge.fury.io/js/%40kyou-izumi%2Finquirer-ordered-checkbox.svg)](https://badge.fury.io/js/%40kyou-izumi%2Finquirer-ordered-checkbox)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A sortable checkbox prompt for [Inquirer.js](https://github.com/SBoudrias/Inquirer.js) that maintains the order of selection. Perfect for prioritizing tasks, ranking options, or creating ordered lists.
@@ -17,7 +17,7 @@ A sortable checkbox prompt for [Inquirer.js](https://github.com/SBoudrias/Inquir
 ## Installation
 
 ```bash
-npm install inquirer-ordered-checkbox
+npm install @kyou-izumi/inquirer-ordered-checkbox
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ npm install inquirer-ordered-checkbox
 ### Basic Example
 
 ```typescript
-import orderedCheckbox from 'inquirer-ordered-checkbox';
+import orderedCheckbox from '@kyou-izumi/inquirer-ordered-checkbox';
 
 const answer = await orderedCheckbox({
   message: 'Select your priorities in order:',
@@ -45,7 +45,7 @@ console.log('Your priorities:', answer);
 ### Advanced Configuration
 
 ```typescript
-import orderedCheckbox from 'inquirer-ordered-checkbox';
+import orderedCheckbox from '@kyou-izumi/inquirer-ordered-checkbox';
 
 const answer = await orderedCheckbox({
   message: 'Configure your development workflow:',
@@ -92,7 +92,7 @@ const answer = await orderedCheckbox({
 ### With Separators
 
 ```typescript
-import orderedCheckbox, { Separator } from 'inquirer-ordered-checkbox';
+import orderedCheckbox, { Separator } from '@kyou-izumi/inquirer-ordered-checkbox';
 
 const answer = await orderedCheckbox({
   message: 'Choose your tech stack:',
@@ -194,7 +194,7 @@ import orderedCheckbox, {
   CheckboxSortConfig, 
   NormalizedChoice,
   CheckboxSortTheme 
-} from 'inquirer-ordered-checkbox';
+} from '@kyou-izumi/inquirer-ordered-checkbox';
 
 interface MyValue {
   id: string;

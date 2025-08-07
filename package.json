@@ -1,6 +1,6 @@
 {
-  "name": "inquirer-ordered-checkbox",
-  "version": "1.0.0",
+  "name": "@kyou-izumi/inquirer-ordered-checkbox",
+  "version": "1.0.1",
   "engines": {
     "node": ">=18"
   },
