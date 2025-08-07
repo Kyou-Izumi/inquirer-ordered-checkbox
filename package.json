@@ -18,8 +18,13 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "tsx test.ts",
-    "prepublishOnly": "npm run build"
+    "build:watch": "tsc --watch",
+    "test": "node test-ci.js",
+    "test:interactive": "tsx test.ts",
+    "test:types": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build && npm run test:types",
+    "release": "npm version patch && git push && git push --tags"
   },
   "dependencies": {
     "@inquirer/core": "^10.1.15",
