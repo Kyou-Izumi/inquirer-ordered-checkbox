@@ -1,0 +1,14 @@
+# Node
+node_modules/
+dist/
+.env
+.DS_Store
+*.log
+# TypeScript
+*.tsbuildinfo
+# VSCode
+.vscode/
+# Test
+coverage/
+# OS
+Thumbs.db
