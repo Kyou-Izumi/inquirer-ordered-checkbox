@@ -133,7 +133,7 @@ const orderedCheckbox = createPrompt(
             } else if (isSpaceKey(key)) {
                 setErrorMessage(undefined);
                 setShowTips(false);
-                
+
                 const currentItem = items[active];
                 if (!currentItem) return;
 
@@ -247,5 +247,6 @@ const orderedCheckbox = createPrompt(
     }
 )
 
+export { orderedCheckbox };
 export default orderedCheckbox;
 export { Separator } from "@inquirer/core";

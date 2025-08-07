@@ -234,4 +234,5 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-MIT © [Kyou Izumi](https://github.com/kyou-izumi)
+Copyright © 2025 [Kyou Izumi](https://github.com/kyou-izumi)
+Licensed under the MIT license.
