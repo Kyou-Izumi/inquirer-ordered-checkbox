@@ -8,6 +8,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     
     steps:
     - uses: actions/checkout@v4
@@ -34,14 +37,21 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         
     - name: Create GitHub Release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        name: Release ${{ github.ref }}
         body: |
-          Changes in this Release
-          - Check the commit history for detailed changes
+          🚀 **New Release**
+          
+          ### 📦 Installation
+          ```bash
+          npm install @kyou-izumi/inquirer-ordered-checkbox@latest
+          ```
+          
+          ### 📋 Changes
+          Check the [commit history](https://github.com/${{ github.repository }}/commits/${{ github.ref }}) for detailed changes.
         draft: false
         prerelease: false

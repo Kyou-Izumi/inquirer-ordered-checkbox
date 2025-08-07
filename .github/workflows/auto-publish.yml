@@ -38,6 +38,9 @@ jobs:
     needs: check-version
     if: needs.check-version.outputs.version-changed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     
     steps:
     - uses: actions/checkout@v4
@@ -65,7 +68,29 @@ jobs:
         
     - name: Create and push tag
       run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
+        git config user.name github-actions[bot]
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
         git tag v${{ needs.check-version.outputs.new-version }}
         git push origin v${{ needs.check-version.outputs.new-version }}
+        
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ needs.check-version.outputs.new-version }}
+        release_name: Release v${{ needs.check-version.outputs.new-version }}
+        body: |
+          🚀 **Version ${{ needs.check-version.outputs.new-version }}**
+          
+          This release was automatically created when the package version was updated.
+          
+          ### 📦 Installation
+          ```bash
+          npm install @kyou-izumi/inquirer-ordered-checkbox@${{ needs.check-version.outputs.new-version }}
+          ```
+          
+          ### 📋 Changes
+          Check the [commit history](https://github.com/${{ github.repository }}/commits/v${{ needs.check-version.outputs.new-version }}) for detailed changes.
+        draft: false
+        prerelease: false
